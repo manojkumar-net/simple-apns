@@ -1,0 +1,17 @@
+{
+    "name": "manojkumarlinux/simple-apns",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Manoj Kumar Linux",
+            "email": "manojkumardeveloper18@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SimpleApns\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
