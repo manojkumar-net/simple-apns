@@ -7,7 +7,15 @@ Needs
 - Message
 - Device Token
 
-Usage
+## Install
+
+via Composer
+
+``` bash
+composer require manojkumarlinux/simple-apns
+```
+
+##Usage
 
 ```php
 <?php 
