@@ -5,7 +5,7 @@ namespace SimpleApns\Lib;
 class Request {
 
     public static $code = [
-        '0'   => 'Config issues.'
+        '0'   => 'Config issues.',
 
         '200' => 'Success.',
 
@@ -45,8 +45,8 @@ class Request {
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        $httpcode = isset(self::$responses[$httpcode]) ? $httpcode ? 0;
+        $httpcode = isset(self::$responses[$httpcode]) ? $httpcode : 0;
 
-        return [ 'response' =>  ? self::$responses[$httpcode], 'code' => $httpcode];
+        return [ 'response' =>  self::$code[$httpcode], 'code' => $httpcode];
     } 
 }
