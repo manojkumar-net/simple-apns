@@ -19,10 +19,20 @@ class Config {
 
    private $deviceToken;
 
+   public function __construct($config) {
+       $this->setKeyPath($config['keyPath'])
+            ->setSecretKey($config['secretKey'])
+            ->setBuildId($config['buildId'])
+            ->setURL($config['environment']);
+   }
 
-   public function setEnv(bool $mode) {
+   public function setURL(bool $mode) {
        $this->url = $mode ? $this->urlProduction :  $this->urlDevelopment; 
        return $this;
+   }
+
+   public function getURL() {
+       return $this->url;
    }
 
    public function setKeyPath(string $path) {
@@ -30,14 +40,26 @@ class Config {
        return $this;
    }
 
+   public function getKeyPath() {
+      return $this->keyPath;
+   }
+
    public function setSecretKey(string $key) {
        $this->secretKey = $key;
        return $this;
    }
 
+   public function getSecretKey() {
+       return $this->secretKey;
+   }
+
    public function setBuildId(string $id) {
        $this->buildId = $id;
        return $this;
+   }
+   
+   public function getBuildId(string $id) {
+       return $this->buildId;
    }
 
    public function getConfig() {
@@ -48,7 +70,7 @@ class Config {
            'keyPath' =>  $this->keyPath,
        ];
    }
-   
+
    public function getHaders() {
        return [
         'apns-topic: '.$this->buildId,

@@ -2,9 +2,13 @@
 
 namespace SimpleApns\Lib;
 
+use SimpleApns\Lib\Config; 
+use SimpleApns\Lib\Message; 
+use SimpleApns\Lib\DeviceToken; 
+
 class Request {
 
-    public static $code = [
+    public static $response = [
         '0'   => 'Config issues.',
 
         '200' => 'Success.',
@@ -27,26 +31,29 @@ class Request {
 
         '503' => 'The server is shutting down and unavailable.',
     ]; 
+   
+    public static function getResponse($httpcode) {
+        $httpcode = isset(self::$responses[$httpcode]) ? $httpcode : 0;
+        return [ 'response' => self::$response[$httpcode] , 'code' => $httpcode ];
+    }
 
-    public static function curlRequest(array $data) {
+    public static function curlRequest(Config $config, Message $message, DeviceToken $deviceToken) {
 
-        $url = $data['config']['url'].$data['deviceToken'];
+        $url = $config->getURL().$deviceToken->getDeviceToken();
 
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $data['headers']);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data['message']));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $config->getHaders());
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message->getMessage()));
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 
-        curl_setopt($ch, CURLOPT_SSLCERT, $data['config']['keyPath']);
-        curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $data['config']['secretKey']);
+        curl_setopt($ch, CURLOPT_SSLCERT, $config->getKeyPath());
+        curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $config->getsecretKey());
 
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        $httpcode = isset(self::$responses[$httpcode]) ? $httpcode : 0;
-
-        return [ 'response' =>  self::$code[$httpcode], 'code' => $httpcode];
+        return self::getResponse($httpcode);
     } 
 }
