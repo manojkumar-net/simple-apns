@@ -62,4 +62,4 @@ array(2) {
 }
 ```
 ## License
-MIT
+GPL-3.0 license 
